@@ -13,12 +13,7 @@ public class roomsizeToCoord : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // Generate a random coordinate within the room
-        Vector3 randomCoordinate = GetRandomDestination();
-        Debug.Log($"Random coordinate in the room: {randomCoordinate}");
-
-        // Instantiate a red cube at the random destination
-        CreateRedCube(randomCoordinate);
+        CreateRedCube(GetRandomDestination());
     }
 
     /// <summary>
