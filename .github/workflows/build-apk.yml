@@ -1,0 +1,97 @@
+name: Build FLAP
+on:
+  workflow_dispatch:
+  pull_request:
+  schedule:
+    - cron: '0 5 * * *' # run at 5 AM UTC
+jobs:
+  build:
+    name: Build FLAP main branch
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout (with LFS)
+      - name: Checkout repo
+        uses: actions/checkout@v3
+        with:
+          ref: main
+          sparse-checkout: |
+            Assets
+            Packages
+            Media
+            ProjectSettings
+
+      - name: Bump version code number
+        run:
+          echo "APK_VERSION_FROM_RUN=$(($GITHUB_RUN_NUMBER))" >> $GITHUB_ENV
+
+      - name: Cache Library
+        uses: actions/cache@v3
+        with:
+         key: FLAP-${{ github.run_id }}
+         path: |
+          Library
+         restore-keys: |
+          FLAP-
+
+      - name: Free Up GitHub Actions Ubuntu Runner Disk Space
+        uses: jlumbroso/free-disk-space@v1.2.0
+        with:
+          tool-cache: false
+          android: true
+          dotnet: false
+          haskell: true
+          large-packages: false
+          swap-storage: false
+
+      - name: Build apk
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          APK_VERSION_CODE: ${{ env.APK_VERSION_FROM_RUN }}
+        with:
+          allowDirtyBuild: true
+          targetPlatform: Android
+          unityVersion: 2022.3.4f1
+          projectPath: .
+          buildsPath: |
+            builds
+          buildName: FLAP-${{ github.run_id }}
+          androidVersionCode: ${{ env.APK_VERSION_FROM_RUN }}
+
+      - name: Store apk
+        uses: actions/upload-artifact@v4
+        with:
+         name: FLAP-${{ github.run_id }}
+         path: builds
+  release:
+    name: Release APK
+    runs-on: ubuntu-latest
+    needs: build # Ensure this job runs after the build job.
+    steps:
+      - name: Checkout repo again (for release)
+        uses: actions/checkout@v3
+
+      - name: Download APK artifact from previous job
+        uses: actions/download-artifact@v4
+        with:
+          name: FLAP-${{ needs.build.outputs.artifact_name }} # Use the same artifact name as in the build job.
+          
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ github.run_number }} # Create a tag based on the run number.
+          release_name: Release v${{ github.run_number }}
+          body: |
+            Automated release of APK version ${{ env.APK_VERSION_FROM_RUN }}.
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload APK to Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: builds/*.apk # Adjust this if your APK is in a different location.
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
