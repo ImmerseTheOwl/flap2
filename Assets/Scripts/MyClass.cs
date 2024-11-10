@@ -1,16 +1,25 @@
 // MyClass.cs
 using System;
 
-namespace MyProject
+namespace Flap
 {
-    public class MyClass
+    public class Butterfly
     {
-        public bool IsPrime(int candidate)
+        public string guts { get; set; }
+        public (float, float, float) position { get; set; }
+
+        public Butterfly(string guts, (float, float, float) position)
         {
-            if (candidate == 1)
-                return false;
-            // Additional logic to check for prime numbers
-            throw new NotImplementedException("Not fully implemented.");
+            this.guts = guts;
+            this.position = position;
+        }
+
+        public (float, float, float) FindHome()
+        {
+            // This method could be implemented to find a home based on some logic.
+            // For simplicity, it returns the current position of the butterfly.
+            return position;
         }
     }
+
 }
