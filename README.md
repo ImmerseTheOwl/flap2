@@ -1,3 +1,5 @@
+![Alt text](images/example.png)
+
 ## Inspiration
 
 We live, think, and remember in a 3D world—so why are we still using 2D surfaces to store our thoughts? Inspired by the method of loci—an ancient mnemonic technique where memories are tied to specific physical locations—we harness the human brain’s innate spatial memory. By turning notetaking into an immersive, spatio-temporal activity, we activate the brain’s parietal cortex to organize and recall information naturally and intuitively. This prototype bridges cognition and technology, unlocking the full potential of human memory and creativity.
