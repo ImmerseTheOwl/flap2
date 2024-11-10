@@ -35,3 +35,112 @@ As a team of HCI researchers, software developers, and educators, we are dedicat
 
 ## Repository
 The main branch contains a working version where the butterflies automatically flap into their appropriate place, categorized by machine learning. Within it, the `DEMO` folder contains the working version of the demo shown in the video, which allows users to place butterfly sticky-notes to space. 
+
+#### Features
+- Text-to-3D-position mapping using sentence embeddings
+- Local embedding server using HuggingFace's sentence-transformers
+- Smooth butterfly movement in Unity
+- Configurable room dimensions and movement speed
+
+#### Prerequisites
+- Python 3.7 or higher
+- Unity 2022.3 or higher
+- pip (Python package installer)
+
+#### Installation
+
+##### 1. Python Server Setup
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/butterfly-embeddings.git
+cd butterfly-embeddings/EmbeddingServer
+
+# Create and activate virtual environment
+python -m venv venv
+
+# On Windows:
+.\venv\Scripts\activate
+# On macOS/Linux:
+source venv/bin/activate
+
+# Install requirements
+pip install -r requirements.txt
+```
+
+##### 2. Start the Embedding Server
+###### Windows:
+```bash
+.\start_embedding_server.bat
+```
+
+###### macOS/Linux:
+```bash
+chmod +x start_embedding_server.sh
+./start_embedding_server.sh
+```
+
+Wait for the "Model loaded!" message.
+
+##### 3. Unity Setup
+1. Create a new Unity project
+2. Copy the scripts from UnityScripts/ to your Assets/Scripts/ folder
+3. Set up the scene:
+   - Create an empty GameObject named "RoomManager"
+   - Attach roomsizeToCoord.cs
+   - Set room bounds (e.g., 10x2.5x4 meters)
+   - Create your butterfly object
+   - Attach Butterfly.cs
+   - Set movement speed and initial "guts" text
+
+#### Usage
+1. Make sure the embedding server is running
+2. Enter text in the Butterfly's "guts" field
+3. The butterfly will move to a position based on the semantic meaning of the text
+4. Try different descriptions like:
+   - "near the window"
+   - "in the corner"
+   - "center of the room"
+   - "high up near the ceiling"
+
+#### Configuration
+- Room dimensions: Modify roomScale in DimensionReducer.cs
+- Movement speed: Adjust in Unity Inspector
+- Server port: Default is 5001 (change in embedding_server.py if needed)
+
+#### Project Structure
+- `EmbeddingServer/`: Python server for text embeddings
+- `UnityScripts/`: C# scripts for Unity implementation
+  - `Butterfly.cs`: Main butterfly behavior
+  - `DimensionReducer.cs`: Converts embeddings to 3D positions
+  - `Embedding.cs`: Handles API communication
+  - `roomsizeToCoord.cs`: Manages room boundaries
+
+#### Troubleshooting
+
+##### Common Issues
+1. Port already in use:
+```bash
+# Find process using port 5001
+# Windows:
+netstat -ano | findstr :5001
+# macOS/Linux:
+lsof -i :5001
+
+# Kill process
+# Windows:
+taskkill /PID <PID> /F
+# macOS/Linux:
+kill -9 <PID>
+```
+
+2. Python version check:
+```bash
+python --version  # Should be 3.7 or higher
+```
+
+3. Package installation issues:
+```bash
+pip install --upgrade pip
+pip install -r requirements.txt
+```
+
