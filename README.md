@@ -1,5 +1,4 @@
 ![Alt text](Slide1.jpeg)
-[![Watch the video](https://i.sstatic.net/Vp2cE.png)](https://youtu.be/hD5RSr51iJE)
 
 ## Inspiration
 
