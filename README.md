@@ -34,4 +34,4 @@ We learned to reverse-engineer sample scenes to understand what was happening un
 As a team of HCI researchers, software developers, and educators, we are dedicated to advancing FLAP’s potential. Our immediate focus is on conducting experiments to validate the concept of using spatial interactions to enhance memory and reduce cognitive load. Through this research, we aim to gain deeper insights into how these interactions, enabled by technological innovation, can unlock human cognitive potential.
 
 ## Repository
-This repository has two branchs. Tha main branch contains a working version where the butterflies automatically flap into their appropriate place, categorized by machine learning. The windows branch contains the working version of the demo shown in the video, which allows users to place butterfly sticky-notes to space. 
+The main branch contains a working version where the butterflies automatically flap into their appropriate place, categorized by machine learning. Within it, the `DEMO` folder contains the working version of the demo shown in the video, which allows users to place butterfly sticky-notes to space. 
