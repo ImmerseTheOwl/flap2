@@ -1,4 +1,4 @@
-![Alt text](slide1.jpeg)
+![Alt text](Slide1.jpeg)
 
 ## Inspiration
 
